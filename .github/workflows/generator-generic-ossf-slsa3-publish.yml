@@ -29,14 +29,14 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix-build
       - run: nix-shell --run "echo OK"
+      - run: cp result/bin/hello .
 
       - name: Generate subject for provenance
         id: hash
         run: |
           set -euo pipefail
-          # Generate the subjects (base64 encoded).
-          cp result/bin/hello .
           echo "hashes=$(sha256sum hello | base64 -w0)" >> "${GITHUB_OUTPUT}"
+          echo "${GITHUB_OUTPUT}"
 
   provenance:
     needs: [build]
