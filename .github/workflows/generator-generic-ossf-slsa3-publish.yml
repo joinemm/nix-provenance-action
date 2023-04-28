@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      digests: ${{ steps.hash.outputs.digests }}
+      digests: ${{ steps.hash.outputs.hashes }}
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +36,6 @@ jobs:
         run: |
           set -euo pipefail
           echo "hashes=$(sha256sum hello | base64 -w0)" >> "${GITHUB_OUTPUT}"
-          echo "${GITHUB_OUTPUT}"
 
   provenance:
     needs: [build]
