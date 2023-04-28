@@ -30,6 +30,15 @@ jobs:
       - run: nix-build
       - run: nix-shell --run "echo OK"
       - run: cp result/bin/hello .
+      
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: hello
+          asset_name: Binary
+          tag: ${{ github.ref }}
+          overwrite: true
 
       - name: Generate subject for provenance
         id: hash
