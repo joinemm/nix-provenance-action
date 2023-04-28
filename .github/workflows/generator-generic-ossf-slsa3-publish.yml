@@ -15,9 +15,6 @@ on:
   workflow_dispatch:
   release:
     types: [created]
-    
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -39,7 +36,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: hello
-          asset_name: Binary
           tag: ${{ github.ref }}
           overwrite: true
 
