@@ -35,7 +35,8 @@ jobs:
         run: |
           set -euo pipefail
           # Generate the subjects (base64 encoded).
-          echo "hashes=$(sha256sum result/bin/hello | base64 -w0)" >> "${GITHUB_OUTPUT}"
+          cp result/bin/hello .
+          echo "hashes=$(sha256sum hello | base64 -w0)" >> "${GITHUB_OUTPUT}"
 
   provenance:
     needs: [build]
