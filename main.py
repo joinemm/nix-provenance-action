@@ -46,14 +46,12 @@ def get_subjects(outputs: dict) -> list[dict]:
         )
         if hash is None:
             LOG.warning(
-                "Output path was not found in the nix store, "
-                "perhaps the package has not been built yet?"
+                f'flake output "{name}" was not found in the nix store, assuming it was not built'
             )
         else:
             hash_type, hash_value = hash.strip().split(":")
             subject["digest"] = {hash_type: hash_value}
-
-        subjects.append(subject)
+            subjects.append(subject)
 
     return subjects
 
