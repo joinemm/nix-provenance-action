@@ -15,7 +15,7 @@
       # nix build .#hello
       packages.hello = pkgs.hello;
 
-      # nix build
-      defaultPackage = self.packages.${system}.hello;
+      # nix build .#hello
+      packages.sbomnix = pkgs.sbomnix;
     });
 }
