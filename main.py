@@ -1,8 +1,8 @@
+import argparse
 import json
 import logging
 import os
 import subprocess
-import argparse
 from datetime import datetime, timezone
 
 LOG = logging.getLogger(os.path.abspath(__file__))
@@ -46,7 +46,8 @@ def get_subjects(outputs: dict) -> list[dict]:
         )
         if hash is None:
             LOG.warning(
-                "Output path was not found in nix store, perhaps the package has not been built yet?"
+                "Output path was not found in the nix store, "
+                "perhaps the package has not been built yet?"
             )
         else:
             hash_type, hash_value = hash.strip().split(":")
@@ -98,7 +99,9 @@ def timestamp(unix_time: int | str | None) -> str | None:
         datetime.fromtimestamp(
             int(unix_time),
             tz=timezone.utc,
-        ).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-4]
+        ).strftime(
+            "%Y-%m-%dT%H:%M:%S.%f"
+        )[:-4]
         + "Z"
     )
 

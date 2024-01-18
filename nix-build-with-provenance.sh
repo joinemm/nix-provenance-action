@@ -16,4 +16,4 @@ export PROVENANCE_TIMESTAMP_BEGIN
 export PROVENANCE_TIMESTAMP_END
 export PROVENANCE_BUILD_COMMAND
 
-python main.py "$1" --out ./provenance.json
+python main.py "$1"
