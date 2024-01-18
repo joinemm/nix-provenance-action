@@ -138,7 +138,7 @@ def provenance(flakeref: str) -> dict:
                     "version": {},
                 },
                 "metadata": {
-                    "invocationId": os.environ.get("PROVENANCE_BUILD_ID"),
+                    "invocationId": os.environ.get("PROVENANCE_INVOCATION_ID"),
                     "startedOn": timestamp(
                         os.environ.get("PROVENANCE_TIMESTAMP_BEGIN"),
                     ),

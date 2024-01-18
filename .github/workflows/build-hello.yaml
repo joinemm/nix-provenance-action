@@ -10,4 +10,8 @@ jobs:
     - uses: cachix/install-nix-action@v22
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    - run: ./nix-build-with-provenance.sh nixpkgs#hello
+    - run: ./nix-build-with-provenance.sh
+      env:
+        PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
+        PROVENANCE_BUILDER_ID: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+        PROVENANCE_BUILD_TYPE: TBD
