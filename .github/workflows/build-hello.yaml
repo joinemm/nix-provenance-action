@@ -20,10 +20,14 @@ jobs:
       run: ./nix-build-with-provenance.sh ${{ github.event.inputs.flakeref }}
       env:
         PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
-        PROVENANCE_BUILDER_ID: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+        PROVENANCE_BUILDER_ID: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         PROVENANCE_BUILD_TYPE: TBD
 
-    - uses: actions/upload-artifact@v4
+    - name: Preview provenance
+      run: cat provenance.json | jq .
+
+    - name: Upload provenance artifact
+      uses: actions/upload-artifact@v4
       with:
         name: provenance
         path: provenance.json
