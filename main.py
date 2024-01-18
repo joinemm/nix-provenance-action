@@ -124,8 +124,8 @@ def provenance(flakeref: str) -> dict:
             "buildDefinition": {
                 "buildType": os.environ.get("PROVENANCE_BUILD_TYPE"),
                 "externalParameters": {
-                    "FlakeURI": flake_metadata["url"],
-                    "target": flake_target,
+                    "flakeUrl": flake_metadata["url"],
+                    "flakeTarget": flake_target,
                     "buildCommand": os.environ.get("PROVENANCE_BUILD_COMMAND"),
                 },
                 "internalParameters": {},
@@ -172,4 +172,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(
