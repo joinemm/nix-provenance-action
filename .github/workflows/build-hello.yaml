@@ -1,6 +1,6 @@
 name: "Build with provenance"
 on:
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
   tests:
