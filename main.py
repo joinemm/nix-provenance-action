@@ -159,13 +159,14 @@ def main():
         description="Get SLSA v1.0 provenance file from nix flake",
     )
     parser.add_argument("flakeref")
-    parser.add_argument("--out", type=argparse.FileType("w", encoding="UTF-8"))
     args = parser.parse_args()
 
     schema = provenance(args.flakeref)
 
-    if args.out:
-        args.out.write(json.dumps(schema, indent=2))
+    out = os.environ.get("PROVENANCE_OUTPUT_FILE")
+    if out:
+        with open(out, "w") as f:
+            f.write(json.dumps(schema, indent=2))
     else:
         print(json.dumps(schema, indent=2))
 
