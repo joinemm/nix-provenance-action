@@ -11,10 +11,12 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: python ${{ github.action_path }}/main.py ${{ inputs.flakeref }}
+    - run: env
       shell: bash
-    - run: cat ${{ github.action_path }}/provenance.py | jq .
+    - run: python ${{ github.action_path }}/main.py ${{ inputs.flakeref }} --out /tmp/provenance.json
+      shell: bash
+    - run: cat /tmp//provenance.py | jq .
       shell: bash
     - id: provenance
-      run: echo "provenance=${{ github.action_path }}/provenance.json" >> $GITHUB_OUTPUT
+      run: echo "provenance=/tmp/provenance.json" >> $GITHUB_OUTPUT
       shell: bash
