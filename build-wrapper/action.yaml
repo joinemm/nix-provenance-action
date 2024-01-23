@@ -16,6 +16,11 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Install nix
+      uses: cachix/install-nix-action@v22
+      with:
+        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+   
     - id: timestamp-begin
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
       shell: bash
@@ -34,9 +39,9 @@ runs:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json
         PROVENANCE_TIMESTAMP_BEGIN: ${{ steps.timestamp-begin.outputs.timestamp }}
         PROVENANCE_TIMESTAMP_END: ${{ steps.timestamp-end.outputs.timestamp }}
-        PROVENANCE_BUILD_COMMAND: nix build ${{ inputs.flakeref }} ${{ inputs.build-args }}
+        PROVENANCE_EXTERNAL_PARAMS: ${{ toJson(inputs) }}
         PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
-        PROVENANCE_BUILDER_ID: "https://github/com/${{ github.action_repository }}@${{ github.action_ref }}" 
+        PROVENANCE_BUILDER_ID: "https://github/com/${{ github.action_repository }}/build-wrapper@${{ github.action_ref }}" 
         PROVENANCE_BUILD_TYPE: "https://github.com/Attestations/GitHubActionsWorkflow@v1"
 
     - id: provenance

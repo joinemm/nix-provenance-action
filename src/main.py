@@ -121,12 +121,12 @@ def provenance(flakeref: str) -> dict:
         "predicate": {
             "buildDefinition": {
                 "buildType": os.environ.get("PROVENANCE_BUILD_TYPE"),
-                "externalParameters": {
-                    "flakeUrl": flake_metadata["url"],
-                    "flakeTarget": flake_target,
-                    "buildCommand": os.environ.get("PROVENANCE_BUILD_COMMAND"),
-                },
-                "internalParameters": {},
+                "externalParameters": json.loads(
+                    os.environ.get("PROVENANCE_EXTERNAL_PARAMS", "{}")
+                ),
+                "internalParameters": json.loads(
+                    os.environ.get("PROVENANCE_INTERNAL_PARAMS", "{}")
+                ),
                 "resolvedDependencies": get_dependencies(drv_path),
             },
             "runDetails": {
