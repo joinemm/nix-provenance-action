@@ -1,0 +1,44 @@
+name: 'Nix build flake with provenance'
+
+inputs:
+  flakeref:
+    description: The nix flake to build
+    required: true
+  build-args:
+    description: arguments given to nix build 
+    required: false
+
+outputs:
+  provenance:
+    description: "Provenance path"
+    value: ${{ steps.provenance.outputs.provenance }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: timestamp-begin
+      run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - id: build
+      run: nix build ${{ inputs.flakeref }} ${{ inputs.build-args }}
+      shell: bash
+
+    - id: timestamp-end
+      run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - run: python ${{ github.action_path }}/src/main.py ${{ inputs.flakeref }}
+      shell: bash
+      env:
+        PROVENANCE_OUTPUT_FILE: /tmp/provenance.json
+        PROVENANCE_TIMESTAMP_BEGIN: ${{ steps.timestamp-begin.outputs.timestamp }}
+        PROVENANCE_TIMESTAMP_END: ${{ steps.timestamp-end.outputs.timestamp }}
+        PROVENANCE_BUILD_COMMAND: nix build ${{ inputs.flakeref }} ${{ inputs.build-args }}
+        PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
+        PROVENANCE_BUILDER_ID: "https://github/com/${{ github.action_repository }}@${{ github.action_ref }}" 
+        PROVENANCE_BUILD_TYPE: "https://github.com/Attestations/GitHubActionsWorkflow@v1"
+
+    - id: provenance
+      run: echo "provenance=/tmp/provenance.json" >> $GITHUB_OUTPUT
+      shell: bash
