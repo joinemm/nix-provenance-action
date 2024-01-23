@@ -15,8 +15,6 @@ runs:
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json
-    - run: cat /tmp//provenance.py | jq .
-      shell: bash
     - id: provenance
       run: echo "provenance=/tmp/provenance.json" >> $GITHUB_OUTPUT
       shell: bash
