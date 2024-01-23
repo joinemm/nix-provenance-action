@@ -11,7 +11,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: python ${{ github.action_path }}/main.py flakeref
+    - run: python ${{ github.action_path }}/main.py ${{ inputs.flakeref }}
       shell: bash
     - run: cat ${{ github.action_path }}/provenance.py | jq .
       shell: bash
