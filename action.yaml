@@ -1,7 +1,7 @@
 name: 'Nix provenance'
 description: 'Nix provence from flake'
 inputs:
-  - id: flakeref
+  flakeref:
     description: 'The nix flake'
     required: true
 outputs:
@@ -12,6 +12,9 @@ runs:
   using: "composite"
   steps:
     - run: python main.py flakeref
+      shell: bash
     - run: cat provenance.py | jq .
+      shell: bash
     - id: provenance
       run: echo "provenance=provenance.json" >> $GITHUB_OUTPUT
+      shell: bash
