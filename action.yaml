@@ -11,10 +11,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: python main.py flakeref
+    - run: python ${{ github.action_path }}/main.py flakeref
       shell: bash
-    - run: cat provenance.py | jq .
+    - run: cat ${{ github.action_path }}/provenance.py | jq .
       shell: bash
     - id: provenance
-      run: echo "provenance=provenance.json" >> $GITHUB_OUTPUT
+      run: echo "provenance=${{ github.action_path }}/provenance.json" >> $GITHUB_OUTPUT
       shell: bash
