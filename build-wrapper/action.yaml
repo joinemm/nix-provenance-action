@@ -28,7 +28,7 @@ runs:
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: python ${{ github.action_path }}/src/main.py ${{ inputs.flakeref }}
+    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.flakeref }}
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json

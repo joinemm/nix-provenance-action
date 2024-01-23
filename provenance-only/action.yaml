@@ -13,7 +13,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: python ${{ github.action_path }}/src/main.py ${{ inputs.flakeref }}
+    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.flakeref }}
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json
