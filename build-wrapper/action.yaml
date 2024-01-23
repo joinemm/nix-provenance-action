@@ -18,8 +18,6 @@ runs:
   steps:
     - name: Install nix
       uses: cachix/install-nix-action@v22
-      with:
-        github_access_token: ${{ secrets.GITHUB_TOKEN }}
    
     - id: timestamp-begin
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
