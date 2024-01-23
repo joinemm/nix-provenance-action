@@ -1,19 +1,19 @@
-name: 'Nix flake provenance'
+name: Nix provenance
 
 inputs:
-  flakeref:
-    description: 'The nix flake'
+  target:
+    description: Nix flake or derivation
     required: true
 
 outputs:
   provenance:
-    description: "Provenance path"
+    description: Provenance path
     value: ${{ steps.provenance.outputs.provenance }}
 
 runs:
-  using: "composite"
+  using: composite
   steps:
-    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.flakeref }}
+    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.target }}
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json

@@ -1,8 +1,8 @@
-name: 'Nix build flake with provenance'
+name: Nix build with provenance
 
 inputs:
-  flakeref:
-    description: The nix flake to build
+  target:
+    description: The nix target to build
     required: true
   build-args:
     description: arguments given to nix build 
@@ -10,11 +10,11 @@ inputs:
 
 outputs:
   provenance:
-    description: "Provenance path"
+    description: Provenance path
     value: ${{ steps.provenance.outputs.provenance }}
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Install nix
       uses: cachix/install-nix-action@v22
@@ -24,14 +24,14 @@ runs:
       shell: bash
 
     - id: build
-      run: nix build ${{ inputs.flakeref }} ${{ inputs.build-args }}
+      run: nix build ${{ inputs.target }} ${{ inputs.build-args }}
       shell: bash
 
     - id: timestamp-end
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.flakeref }}
+    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.target }}
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json

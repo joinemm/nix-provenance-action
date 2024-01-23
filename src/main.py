@@ -46,7 +46,7 @@ def get_subjects(outputs: dict) -> list[dict]:
         )
         if hash is None:
             LOG.warning(
-                f'flake output "{name}" was not found in the nix store, assuming it was not built'
+                f'Derivation output "{name}" was not found in the nix store, assuming it was not built'
             )
         else:
             hash_type, hash_value = hash.strip().split(":")
@@ -97,20 +97,14 @@ def timestamp(unix_time: int | str | None) -> str | None:
         datetime.fromtimestamp(
             int(unix_time),
             tz=timezone.utc,
-        ).strftime(
-            "%Y-%m-%dT%H:%M:%S.%f"
-        )[:-4]
+        ).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-4]
         + "Z"
     )
 
 
-def provenance(flakeref: str) -> dict:
+def provenance(target: str) -> dict:
     """Create the provenance file"""
-    flake_path, flake_target = flakeref.split("#", 1)
-    flake_metadata = json.loads(
-        exec_cmd(["nix", "flake", "metadata", "--json", flake_path])
-    )
-    drv_json = json.loads(exec_cmd(["nix", "derivation", "show", flakeref]))
+    drv_json = json.loads(exec_cmd(["nix", "derivation", "show", target]))
     drv_path = next(iter(drv_json))
     drv_json = drv_json[drv_path]
 
@@ -154,12 +148,12 @@ def main():
     """Main function that parses the arguments"""
     parser = argparse.ArgumentParser(
         prog="nix-provenance",
-        description="Get SLSA v1.0 provenance file from nix flake",
+        description="Get SLSA v1.0 provenance file from nix flake or derivation",
     )
-    parser.add_argument("flakeref")
+    parser.add_argument("target")
     args = parser.parse_args()
 
-    schema = provenance(args.flakeref)
+    schema = provenance(args.target)
 
     out = os.environ.get("PROVENANCE_OUTPUT_FILE")
     if out:
