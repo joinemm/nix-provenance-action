@@ -7,6 +7,9 @@ inputs:
   build-args:
     description: arguments given to nix build 
     required: false
+  install-nix:
+    required: false
+    default: 'true'
 
 outputs:
   provenance:
@@ -18,6 +21,7 @@ runs:
   steps:
     - name: Install nix
       uses: cachix/install-nix-action@v22
+      if: inputs.install-nix == 'true'
    
     - id: timestamp-begin
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
