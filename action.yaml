@@ -29,11 +29,11 @@ runs:
     - id: get-context
       shell: bash
       run: |
-        {
-          echo 'PROVENANCE_INTERNAL_PARAMS<<EOF'
-          echo ${{ toJson(github) }} | jq 'del(.token)'
-          echo EOF 
-        } >> "$GITHUB_ENV"
+        echo 'PROVENANCE_INTERNAL_PARAMS<<EOF' >> $GITHUB_ENV
+        echo "$GITHUB_CONTEXT" | jq 'del(.token)'  >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
    
     - id: timestamp-begin
       shell: bash
