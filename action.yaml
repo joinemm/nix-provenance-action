@@ -35,15 +35,16 @@ runs:
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
       shell: bash
 
-    - run: python ${{ github.action_path }}/../src/main.py ${{ inputs.target }}
+    - run: nix run github:tiiuae/sbomnix#provenance ${{ inputs.target }}
       shell: bash
       env:
         PROVENANCE_OUTPUT_FILE: /tmp/provenance.json
         PROVENANCE_TIMESTAMP_BEGIN: ${{ steps.timestamp-begin.outputs.timestamp }}
-        PROVENANCE_TIMESTAMP_END: ${{ steps.timestamp-end.outputs.timestamp }}
+        PROVENANCE_TIMESTAMP_FINISHED: ${{ steps.timestamp-end.outputs.timestamp }}
         PROVENANCE_EXTERNAL_PARAMS: ${{ toJson(inputs) }}
+        PROVENANCE_INTERNAL_PARAMS: ${{ toJson(github) }}
         PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
-        PROVENANCE_BUILDER_ID: "https://github/com/${{ github.action_repository }}/build-wrapper@${{ github.action_ref }}" 
+        PROVENANCE_BUILDER_ID: "https://github.com/actions/runner/github-hosted" 
         PROVENANCE_BUILD_TYPE: "https://github.com/Attestations/GitHubActionsWorkflow@v1"
 
     - id: provenance
