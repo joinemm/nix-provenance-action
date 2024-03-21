@@ -20,7 +20,7 @@ runs:
   using: composite
   steps:
     - name: Install nix
-      uses: cachix/install-nix-action@v22
+      uses: cachix/install-nix-action@v26
       if: inputs.install-nix == 'true'
    
     - id: timestamp-begin
