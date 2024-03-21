@@ -31,7 +31,7 @@ runs:
       run: |
         {
           echo 'PROVENANCE_INTERNAL_PARAMS<<EOF'
-          $(echo ${{ toJson(github) }} | jq 'del(.token)')
+          echo ${{ toJson(github) }} | jq 'del(.token)'
           echo EOF 
         } >> "$GITHUB_ENV"
    
