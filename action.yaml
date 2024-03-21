@@ -22,6 +22,12 @@ runs:
     - name: Install nix
       uses: cachix/install-nix-action@v26
       if: inputs.install-nix == 'true'
+
+    - id: get-context
+      run: echo "context=$(echo $GITHUB_CONTEXT"
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      shell: bash
    
     - id: timestamp-begin
       run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
@@ -42,7 +48,7 @@ runs:
         PROVENANCE_TIMESTAMP_BEGIN: ${{ steps.timestamp-begin.outputs.timestamp }}
         PROVENANCE_TIMESTAMP_FINISHED: ${{ steps.timestamp-end.outputs.timestamp }}
         PROVENANCE_EXTERNAL_PARAMS: ${{ toJson(inputs) }}
-        PROVENANCE_INTERNAL_PARAMS: ${{ toJson(github) }}
+        PROVENANCE_INTERNAL_PARAMS: ${{ steps.get-context.outputs.context }}
         PROVENANCE_INVOCATION_ID: ${{ github.run_number }}
         PROVENANCE_BUILDER_ID: "https://github.com/actions/runner/github-hosted" 
         PROVENANCE_BUILD_TYPE: "https://github.com/Attestations/GitHubActionsWorkflow@v1"
