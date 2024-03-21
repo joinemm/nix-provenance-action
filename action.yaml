@@ -24,7 +24,7 @@ runs:
       if: inputs.install-nix == 'true'
 
     - id: get-context
-      run: echo "context=$(echo $GITHUB_CONTEXT"
+      run: echo "context=$(echo $GITHUB_CONTEXT)"
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       shell: bash
